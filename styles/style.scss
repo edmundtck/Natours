@@ -1,0 +1,695 @@
+@import 'variables';
+@import 'media-query';
+
+// Base style
+
+*,
+*:after,
+*:before {
+	margin: 0;
+	padding: 0;
+	box-sizing: inherit; /* set the inherit here so for 3rd party css is not affected by universal selector */
+}
+
+html {
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+	font-size: 62.5%; /* 1rem = 10px, 10px / 16px = 62.5% | 10px of the default 16px from browser. easier to set rem */
+
+	@include sm {
+		font-size: 43.75%;
+	}
+}
+
+/* Set the default style */
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+	line-height: 1.6;
+	font-size: 1.6rem;
+}
+
+.wrapper {
+	width: 100%;
+	padding: 3rem;
+	min-height: 100vh;
+	background-color: $color-white;
+}
+
+.btn {
+	&:link,
+	&:visited {
+	}
+	&:hover,
+	&:active {
+		color: currentColor;
+	}
+}
+
+.btn--primary {
+	font-size: inherit;
+	color: $color-black;
+	padding: 1.5rem 4.5rem;
+	border-radius: 3rem;
+	background-color: $bg-primary;
+	box-shadow: $shadow-primary;
+
+	&:hover,
+	&:active {
+		box-shadow: $shadow-secondary;
+		transform: translateY(-.5rem);
+	}
+}
+
+.btn--link {
+	font-size: inherit;
+	padding: 1rem 0;
+	border-bottom: 1px solid currentColor;
+}
+
+.btn--secondary {
+	font-size: inherit;
+	background: $color-secondary;
+	padding: 1.5rem 4.5rem;
+	border-radius: 3rem;
+	text-transform: uppercase;
+	color: black;
+}
+
+// End of Base style
+
+// Navigation
+
+.navigation {
+	position: fixed;
+	top: 0;
+	right: 0;
+	// width: 100%;
+	// height: 100%;
+	// background-color: cyan;
+	z-index: 100;
+
+	.menu {
+		position: absolute;
+		z-index: 50;
+		top: 6rem;
+		right: 6rem;
+		width: 5rem;
+		height: 5rem;
+		background-color: $color-white;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
+		align-items: center;
+		border-radius: 50%;
+		padding: 1rem;
+		cursor: pointer;
+
+		&.active {
+			.menu__line--1 {
+				transform: rotate(-45deg) translate(-.6rem, .6rem);
+			}
+
+			.menu__line--2 {
+				opacity: 0;
+				visibility: hidden;
+			}
+
+			.menu__line--3 {
+				transform: rotate(45deg) translate(-.6rem, -.6rem);
+			}
+		}
+		&__line {
+			height: .3rem;
+			width: 3rem;
+			transition: 0.4s;
+			background-color: $color-black;
+		}
+
+		&.active + .navigation__background {
+			top: 0rem;
+			right: 0rem;
+			width: 100%;
+			height: 100%;
+			border-radius: 0;
+		}
+
+		&.active ~ .nav {
+			transform: scale(1);
+		}
+	}
+
+	&__background {
+		position: fixed;
+		z-index: 10;
+		top: 6rem;
+		right: 6rem;
+		width: 5rem;
+		height: 5rem;
+		background: $gradient-primary;
+		transition: all .2s;
+		border-radius: 50%;
+	}
+
+	.nav {
+		position: fixed;
+		z-index: 20;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transform: scale(0);
+		transition: transform .2s;
+
+		&__list {
+			width: 100%;
+			list-style-type: none;
+			display: grid;
+			justify-items: center;
+			align-items: center;
+			align-content: center;
+			row-gap: $gap-sm;
+		}
+
+		&__link {
+			padding: .2rem 2rem;
+			display: inline-block;
+			text-decoration: none;
+			color: $color-white;
+			font-size: $heading-md;
+			font-weight: 100;
+			background-image: linear-gradient(
+				60deg,
+				$color-secondary 0%,
+				$color-secondary 50%,
+				transparent 50%,
+				transparent 100%
+			);
+			background-size: 250%;
+			background-repeat: no-repeat;
+			background-position: 250%;
+			transition: background-position .5s;
+
+			@include sm {
+				font-size: 4rem;
+			}
+
+			&:hover {
+				background-position: 0;
+			}
+		}
+	}
+}
+
+// End of Navigation
+
+// Header
+.header {
+	position: relative;
+	z-index: 5;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	background-image: $gradient-primary-opacity, url('../images/hero-small.jpg');
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
+
+	&__logo-box {
+		position: absolute;
+		top: 3rem;
+		left: 3rem;
+		width: 10rem;
+	}
+
+	&__logo {
+		width: 100%;
+	}
+
+	.hero {
+		text-align: center;
+
+		&__title {
+			font-size: $heading-lg;
+			text-transform: uppercase;
+			letter-spacing: 2rem;
+			font-weight: 100;
+			color: $color-white;
+			text-shadow: 0.1rem 0.1rem 0.5rem rgba(0, 0, 0, .8);
+
+			@include md {
+				font-size: $heading-md;
+			}
+
+			@include sm {
+				font-size: 4rem;
+			}
+		}
+
+		&__subtitle {
+			font-size: $heading-sm;
+			letter-spacing: 1.9rem;
+			margin-bottom: $gap-md;
+			color: $color-white;
+			text-shadow: 0.1rem 0.1rem 0.5rem rgba(0, 0, 0, .8);
+		}
+	}
+}
+
+// End of Header
+
+.section {
+	padding: 10rem 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	background-color: $bg-primary;
+
+	&__header {
+		font-size: $heading-md;
+		margin-bottom: $gap-lg;
+		text-transform: uppercase;
+		text-align: center;
+		font-weight: 100;
+
+		@include md {
+			font-size: 4rem;
+		}
+	}
+}
+
+// Section About
+.section-about {
+	margin-top: -10rem;
+	padding-top: 22vh;
+
+	.about {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		column-gap: 5rem;
+		max-width: 114rem;
+
+		@include md {
+			grid-template-columns: 1fr;
+		}
+
+		&__heading {
+			font-size: $heading-sm;
+			font-weight: 100;
+		}
+
+		&__content {
+			display: grid;
+			row-gap: $gap-sm;
+		}
+
+		&__btn {
+			justify-self: start;
+		}
+
+		&__images {
+			position: relative;
+
+			@include md {
+				display: none;
+			}
+		}
+
+		&__photo {
+			width: 60%;
+			position: absolute;
+
+			&--1 {
+				left: 0;
+				top: 0;
+			}
+
+			&--2 {
+				right: 0;
+				top: 5rem;
+			}
+
+			&--3 {
+				left: 5rem;
+				top: 15rem;
+			}
+		}
+	}
+}
+
+// End of Section About
+
+// Section Features
+
+.section-features {
+	position: relative;
+
+	&__background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transform: skewY(-7deg);
+		z-index: 1;
+
+		background-image: $gradient-primary-opacity, url('../images/nat-4.jpg');
+	}
+
+	.features {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+		gap: $gap-sm $gap-md;
+		position: relative;
+		z-index: 10;
+
+		@include xl {
+			grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+		}
+	}
+
+	.feature {
+		display: grid;
+		row-gap: $gap-sm;
+		justify-items: center;
+		text-align: center;
+		padding: 2rem 1rem;
+		background-color: $bg-secondary;
+		border-radius: 1rem;
+
+		&__icon i {
+			font-size: 6rem;
+			color: $color-white;
+			opacity: .8;
+		}
+
+		&__title {
+			font-size: $heading-sm;
+			text-transform: uppercase;
+			font-weight: 100;
+			letter-spacing: .2rem;
+		}
+	}
+}
+
+// End of Section Features
+
+// Section Tours
+
+.section-tours {
+	.detail-cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+		gap: $gap-sm $gap-md;
+		margin-bottom: $gap-lg;
+	}
+
+	.card {
+		background-color: transparent;
+		border: none;
+		perspective: 100rem;
+
+		&__inner {
+			transform-style: preserve-3d;
+			transition: transform 2s;
+			position: relative;
+		}
+
+		&:hover .card__inner {
+			transform: rotateY(180deg);
+		}
+
+		&__side {
+			backface-visibility: hidden;
+
+			&--front {
+				background-color: $bg-secondary;
+			}
+
+			&--back {
+				position: absolute;
+				height: 100%;
+				width: 100%;
+				top: 0;
+				left: 0;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-evenly;
+				align-items: center;
+				text-align: center;
+				background-color: $bg-secondary;
+				transform: rotateY(180deg);
+			}
+		}
+
+		&__picture {
+			backface-visibility: hidden;
+
+			position: relative;
+			height: 18rem;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+
+			&--1 {
+				background-image: $gradient-primary-opacity, url('../images/nat-5.jpg');
+			}
+
+			&--2 {
+				background-image: $gradient-primary-opacity, url('../images/nat-6.jpg');
+			}
+
+			&--3 {
+				background-image: $gradient-primary-opacity, url('../images/nat-7.jpg');
+			}
+		}
+
+		&__heading {
+			position: absolute;
+			bottom: 1rem;
+			right: 1rem;
+			padding: 1rem;
+			background-color: $bg-primary;
+		}
+
+		&__list {
+			list-style-type: none;
+			text-align: center;
+			padding: 3rem;
+		}
+
+		&__item {
+			padding: .5rem 0;
+
+			&:not(:last-child) {
+				border-bottom: .1rem solid $color-black;
+			}
+		}
+
+		&__price-value {
+			font-size: $heading-lg;
+			font-weight: 100;
+		}
+	}
+}
+
+// End of Section Tours
+
+// Section Testimonials
+.section-testimonials {
+	position: relative;
+
+	.background-video {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: 1;
+		opacity: .3;
+	}
+
+	.section__header {
+		position: relative;
+		z-index: 5;
+	}
+
+	.testimonials {
+		display: grid;
+		row-gap: $gap-md;
+	}
+
+	.story {
+		position: relative;
+
+		&__background {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			transform: skewX(-10deg);
+			background-color: $bg-secondary;
+			z-index: 5;
+			opacity: .7;
+
+			@include xl {
+				transform: skewX(0deg);
+			}
+		}
+
+		&__content {
+			position: relative;
+			display: grid;
+			grid-template-columns: auto 1fr;
+			column-gap: $gap-sm;
+			padding: 4rem;
+			align-items: center;
+			z-index: 10;
+
+			@include md {
+				grid-template-columns: 1fr;
+				justify-items: center;
+				row-gap: $gap-sm;
+			}
+		}
+
+		&__heading {
+			font-size: $heading-sm;
+			text-transform: uppercase;
+			letter-spacing: .1rem;
+			font-weight: 100;
+		}
+
+		&__image {
+			width: 12rem;
+			height: 12rem;
+			object-fit: cover;
+			grid-row: 1 / span 2;
+			border-radius: 50%;
+		}
+	}
+}
+
+// End of Section Testimonials
+
+// Section Booking
+.section-booking {
+	.booking {
+		background-image: linear-gradient(
+				110deg,
+				rgba(255, 255, 255, .7) 0%,
+				rgba(255, 255, 255, .7) 60%,
+				transparent 60%,
+				transparent 100%
+			),
+			url('../images/nat-10.jpg');
+		background-position: center;
+		background-size: cover;
+		background-repeat: no-repeat;
+
+		@include md {
+			background-image: linear-gradient(110deg, rgba(255, 255, 255, .7) 0%, rgba(255, 255, 255, .7) 100%),
+				url('../images/nat-10.jpg');
+		}
+
+		&__form {
+		}
+	}
+
+	.form {
+		width: 50%;
+		padding: 5rem 2rem;
+		display: grid;
+		row-gap: $gap-sm;
+
+		@include md {
+			width: 100%;
+		}
+
+		&__heading {
+			font-size: $heading-sm;
+		}
+
+		&__input {
+			width: 100%;
+			padding: 1rem;
+		}
+
+		&__group {
+			display: flex;
+		}
+		&__radio-group {
+			&:not(:last-child) {
+				margin-right: $gap-sm;
+			}
+		}
+
+		&__button {
+			justify-self: start;
+		}
+	}
+}
+
+// End of Section Booking
+
+// Footer
+
+.footer {
+	@extend .section;
+	background-color: $color-black;
+
+	&__container {
+	}
+	&__logo {
+		width: 15rem;
+		margin: 0 auto $gap-md;
+		display: block;
+	}
+	&__info {
+		display: grid;
+		column-gap: $gap-lg;
+		grid-template-columns: 1fr 1fr;
+
+		@include md {
+			grid-template-columns: 1fr;
+			row-gap: $gap-md;
+		}
+	}
+
+	.nav {
+		list-style-type: none;
+		border-top: .1rem solid $color-white;
+		padding-top: 2rem;
+		display: flex;
+		justify-content: space-between;
+
+		&__link {
+			color: $color-white;
+			text-decoration: none;
+			font-size: 1.5rem;
+			text-transform: uppercase;
+		}
+	}
+
+	.copyright {
+		padding-top: 2rem;
+		border-top: .1rem solid $color-white;
+		color: $color-white;
+
+		@include md {
+			text-align: center;
+		}
+
+		&__link {
+			text-decoration: none;
+			color: currentColor;
+		}
+	}
+}
+
+// End of Footer
